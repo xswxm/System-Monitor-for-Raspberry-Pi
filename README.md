@@ -26,7 +26,6 @@ DC = 24
 ```
 
 ### How to Use
-Open System Settings - Keyboard - Shortcuts and add your commands
 ```sh
 sudo python disp.py
 ```
