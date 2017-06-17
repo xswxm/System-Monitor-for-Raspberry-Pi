@@ -1,8 +1,8 @@
 System Monitor for Raspberry Pi with 12864/SSD1306
 
 ### Demo
-<img src="http://img.youtube.com/vi/7MF6DfqhK14/0.jpg" 
-alt="Bad Apple on 12864 with Python and Raspberry Pi " width="480" height="360" border="10" />
+<img src="https://github.com/xswxm/System-Monitor-for-Raspberry-Pi/blob/master/demo.jpeg?raw=true" 
+alt="Demo" width="480" height="260" border="10" />
 
 ### Modules
 Adafruit_GPIO.SPI
