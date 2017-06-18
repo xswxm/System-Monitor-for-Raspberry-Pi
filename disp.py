@@ -81,6 +81,7 @@ while True:
     # Memory usage
     mem_total, mem_used = os.popen("free -m | awk '/Mem/ {print $2; print $3}'")
     mem  = mem_used + '/' + mem_total + ' MB'
+    mem_per = str(int(mem_used) * 100 / int(mem_total)) + ' %'
     # Network usage
     netio = psutil.net_io_counters()
     net_up = speed_adjust(float(netio.bytes_sent - netio_sent))
@@ -108,7 +109,8 @@ while True:
     draw.text((38, 0),  indent(IP, 15),       font=font, fill=255)
     draw.text((38, 8),  cpu_temp,             font=font, fill=255)
     draw.text((86, 8),  indent(cpu_used, 6),  font=font, fill=255)
-    draw.text((38, 16), indent(mem, 16),      font=font, fill=255)
+    draw.text((38, 16), mem,                  font=font, fill=255)
+    draw.text((98, 16), indent(mem_per, 4),   font=font, fill=255)
     draw.text((56, 24), indent(net_up, 11),   font=font, fill=255)
     draw.text((56, 32), indent(net_down, 11), font=font, fill=255)
     draw.text((34, 40), disk,                 font=font, fill=255)
