@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import math
-import time
+# import time
 
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
@@ -62,6 +62,9 @@ def speed_adjust(value):
             value = value / 1024
             return '{0:.2f}'.format(value) + ' MB/S'
 
+# # Initialize time
+# time_new = time_old = time.time()
+
 # Initilize network status
 netio = psutil.net_io_counters()
 netio_sent = netio.bytes_sent
@@ -74,6 +77,7 @@ while True:
     IP = os.popen("hostname -I | cut -d\' \' -f1").readline()
     # CPU temperature and usage
     cpu_temp = os.popen('vcgencmd measure_temp').readline().replace("temp=", "").replace('\'C', ' \'C')
+    # '1' meaning 1 second
     cpu_used = psutil.cpu_percent(1)
     draw.rectangle((0, 60, 127, 63), outline=255, fill=0)
     draw.rectangle((0, 60, int(1.28 * cpu_used), 63), outline=255, fill=255)
@@ -84,18 +88,38 @@ while True:
     mem_per = str(int(mem_used) * 100 / int(mem_total)) + ' %'
     # Network usage
     netio = psutil.net_io_counters()
-    net_up = speed_adjust(float(netio.bytes_sent - netio_sent))
-    net_down = speed_adjust(float(netio.bytes_recv - netio_recv))
+    # # Update time
+    # time_new = time.time()
+    # # Calculate time passed
+    # t = time_new - time_old
+    # Calculate net upload and download speed
+    # The reason we do not calculate with the time is becuase reading cpu usage takes appropriately 1 second
+    # Otherwise, please add time to the calculation
+    net_up = speed_adjust(float(netio.bytes_sent-netio_sent))
+    net_down = speed_adjust(float(netio.bytes_recv-netio_recv))
+    # # Renew time_old
+    # time_old = time.time()
+    # Renew netio values
     netio_sent = netio.bytes_sent
     netio_recv = netio.bytes_recv
+    # # Renew time_old
+    # time_old = time.time()
     # Disk usage
     disk_used, disk_total, disk_per = os.popen("df -h | awk '/root/ {print $3; print $2; print $5}'")
     disk = disk_used.replace('G', '') + '/' + disk_total.replace('G', '') + ' GB'
     disk_per = disk_per.replace('%', ' %')
     # HDD usage
-    sda1_used, sda1_total, sda1_per = os.popen("df -h | awk '/sda1/ {print $3; print $2; print $5}'")
-    sda1 = sda1_used.replace('G', '') + '/' + sda1_total.replace('G', '') + ' GB'
-    sda1_per = sda1_per.replace('%', ' %')
+    try:
+        sda1_used, sda1_total, sda1_per = os.popen("df -h | awk '/sda1/ {print $3; print $2; print $5}'")
+        sda1 = sda1_used.replace('G', '') + '/' + sda1_total.replace('G', '') + ' GB'
+        sda1_per = sda1_per.replace('%', ' %')
+    # Exception if there is no sda driver
+    except Exception as e:
+        sda1 = 'N/A'
+        sda1_per = 'N/A'
+    # sda1_used, sda1_total, sda1_per = os.popen("df -h | awk '/sda1/ {print $3; print $2; print $5}'")
+    # sda1 = sda1_used.replace('G', '') + '/' + sda1_total.replace('G', '') + ' GB'
+    # sda1_per = sda1_per.replace('%', ' %')
 
     # Draw titles
     draw.text((0, 0),  'IP:',       font=font, fill=255)
