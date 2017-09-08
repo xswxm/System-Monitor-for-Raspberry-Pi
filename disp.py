@@ -15,7 +15,7 @@ import os, psutil
 
 # Raspberry Pi pin configuration:
 RST = 25
-DC = 24
+DC = 23
 SPI_PORT = 0
 SPI_DEVICE = 0
 
@@ -84,7 +84,7 @@ while True:
     cpu_used = str(cpu_used) + ' %'
     # Memory usage
     mem_total, mem_used = os.popen("free -m | awk '/Mem/ {print $2; print $3}'")
-    mem  = mem_used + '/' + mem_total + ' MB'
+    mem  = '{0}/{1} MB'.format(mem_used, mem_total).replace('\n', '')
     mem_per = str(int(mem_used) * 100 / int(mem_total)) + ' %'
     # Network usage
     netio = psutil.net_io_counters()
@@ -106,12 +106,12 @@ while True:
     # time_old = time.time()
     # Disk usage
     disk_used, disk_total, disk_per = os.popen("df -h | awk '/root/ {print $3; print $2; print $5}'")
-    disk = disk_used.replace('G', '') + '/' + disk_total.replace('G', '') + ' GB'
+    disk = '{0}/{1} GB'.format(disk_used.replace('G', ''), disk_total.replace('G', '')).replace('\n', '')
     disk_per = disk_per.replace('%', ' %')
     # HDD usage
     try:
         sda1_used, sda1_total, sda1_per = os.popen("df -h | awk '/sda1/ {print $3; print $2; print $5}'")
-        sda1 = sda1_used.replace('G', '') + '/' + sda1_total.replace('G', '') + ' GB'
+        sda1 = '{0}/{1} GB'.format(sda1_used.replace('G', ''), sda1_total.replace('G', '')).replace('\n', '')
         sda1_per = sda1_per.replace('%', ' %')
     # Exception if there is no sda driver
     except Exception as e:
