@@ -1,8 +1,8 @@
 System Monitor for Raspberry Pi with 12864/SSD1306
 
 ### Demo
-<img src="https://github.com/xswxm/System-Monitor-for-Raspberry-Pi/blob/master/demo.jpeg?raw=true" 
-alt="Demo" width="480" height="260" border="10" />
+<img src="https://github.com/xswxm/System-Monitor-for-Raspberry-Pi/blob/master/demo.bmp?raw=true" 
+alt="Demo" width="512" height="256" border="10" />
 
 ### Modules
 Adafruit_GPIO.SPI
@@ -27,7 +27,8 @@ DC = 24
 
 ### How to Use
 ```sh
-sudo python disp.py
+# Run with Python 2
+python disp.py
 ```
 
 License
